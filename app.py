@@ -8,14 +8,25 @@ from tensorflow.keras.utils import load_img, img_to_array
 from PIL import Image
 import io
 import os  # 🟰 اضف هذا
+from fastapi.responses import RedirectResponse
 
 # إنشاء تطبيق FastAPI
 app = FastAPI()
+model = None
+scaler = None
+cnn = None
 
-# تحميل الموديلات
-model = joblib.load("model (1).pkl")
-scaler = joblib.load("scaler.pkl")
-cnn = load_model("drawings (1).keras")
+@app.on_event("startup")
+def load_models():
+    global model, scaler, cnn
+    model = joblib.load("model (1).pkl")
+    scaler = joblib.load("scaler.pkl")
+    cnn = load_model("drawings (1).keras")
+
+@app.get("/", include_in_schema=False)
+def index():
+    return RedirectResponse(url="/docs", status_code=308)
+
 
 # تعريف شكل بيانات الأرقام
 class InputData(BaseModel):
