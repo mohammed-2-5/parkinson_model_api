@@ -6,15 +6,6 @@ __pycache__/
 # Ignore virtual environment
 .venv/
 
-# Ignore model files (large files)
-*.pkl
-*.keras
-*.h5
-
-# Ignore temporary image files
-*.png
-*.jpg
-*.jpeg
 
 # Ignore system files
 .DS_Store
