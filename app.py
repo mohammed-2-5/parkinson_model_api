@@ -7,6 +7,7 @@ from tensorflow.keras.models import load_model
 from tensorflow.keras.utils import load_img, img_to_array
 from PIL import Image
 import io
+import os  # 🟰 اضف هذا
 
 # إنشاء تطبيق FastAPI
 app = FastAPI()
@@ -81,6 +82,7 @@ async def predict_image(file: UploadFile = File(...)):
         "prediction_value": prediction_value
     }
 # هنا نشغل التطبيق عند الإقلاع
+
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("app:app", host="0.0.0.0", port=8000)
+    uvicorn.run("app:app", host="0.0.0.0", port=int(os.environ.get("PORT", 8000)))
