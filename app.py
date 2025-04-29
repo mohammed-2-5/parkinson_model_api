@@ -80,3 +80,7 @@ async def predict_image(file: UploadFile = File(...)):
         "prediction_class": predicted_class,
         "prediction_value": prediction_value
     }
+# هنا نشغل التطبيق عند الإقلاع
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run("app:app", host="0.0.0.0", port=8000)
