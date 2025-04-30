@@ -13,3 +13,4 @@ Thumbs.db
 
 # VSCode settings (if exists)
 .vscode/
+.vercel
