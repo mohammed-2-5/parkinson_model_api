@@ -1,12 +1,9 @@
 fastapi
 uvicorn
-scikit-learn
-catboost
 pydantic
-joblib
-python-multipart
-numpy
 pandas
+numpy
+joblib
+gdown
 tensorflow
 pillow
-hypercorn
