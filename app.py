@@ -7,7 +7,6 @@ import os
 os.environ["CUDA_VISIBLE_DEVICES"] = "-1"  # ⛔️ لمنع استخدام GPU
 
 from tensorflow.keras.models import load_model
-from tensorflow.keras.utils import load_img, img_to_array
 from PIL import Image
 import io
 from contextlib import asynccontextmanager
