@@ -5,5 +5,5 @@ pandas
 numpy
 joblib
 gdown
-tensorflow
+tensorflow-cpu
 pillow
