@@ -3,11 +3,13 @@ from pydantic import BaseModel
 import joblib
 import numpy as np
 import pandas as pd
+import os  # 🟰 اضف هذا
+
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 from tensorflow.keras.models import load_model
 from tensorflow.keras.utils import load_img, img_to_array
 from PIL import Image
 import io
-import os  # 🟰 اضف هذا
 from fastapi.responses import RedirectResponse
 
 # إنشاء تطبيق FastAPI
