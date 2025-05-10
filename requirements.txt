@@ -5,5 +5,9 @@ pandas
 numpy
 joblib
 gdown
-tensorflow-cpu
+tensorflow
 pillow
+scikit-learn
+catboost
+python-multipart
+google-cloud-storage
