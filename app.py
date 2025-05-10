@@ -2,12 +2,11 @@ from fastapi import FastAPI, UploadFile, File
 from pydantic import BaseModel
 from fastapi.responses import RedirectResponse
 from contextlib import asynccontextmanager
-
+from google.cloud import storage
 import pandas as pd
 import numpy as np
 from PIL import Image
 import joblib
-import gdown
 import io
 import os
 
@@ -16,27 +15,32 @@ from tensorflow.keras.models import load_model
 # ⛔️ لمنع استخدام الـ GPU على السيرفرات
 os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
-# ⬇️ روابط Google Drive لتحميل النماذج
+# ⬇️ إعدادات Google Cloud Storage
+BUCKET_NAME = "parkinson_models"
 FILES = {
-    "model.pkl": "1CWubdXPizuhvGRayPbKj0XwKNVRsO5jY",
-    "scaler.pkl": "1ViMGq8moxRtpNE56cV-nyNwdgBMpUwP7",
-    "drawings.keras": "1s7_QLcejB6-4DAYIjktkflP_1FwC0V1J"
+    "model.pkl": "model.pkl",
+    "scaler.pkl": "scaler.pkl",
+    "drawings.keras": "drawings.keras"
 }
 
-def download_models():
+# ⬇️ تحميل النماذج من Google Cloud Storage
+def download_models_from_gcs():
+    storage_client = storage.Client()
+    bucket = storage_client.bucket(BUCKET_NAME)
     os.makedirs("models", exist_ok=True)
-    for filename, file_id in FILES.items():
+    
+    for filename, blob_name in FILES.items():
         path = f"models/{filename}"
         if not os.path.exists(path):
-            print(f"🔽 Downloading {filename}...")
-            url = f"https://drive.google.com/uc?id={file_id}"
-            gdown.download(url, path, quiet=False)
+            print(f"🔽 Downloading {filename} from GCS...")
+            blob = bucket.blob(blob_name)
+            blob.download_to_filename(path)
 
 # ⬇️ تحميل النماذج تلقائيًا عند بدء التشغيل
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     global model, scaler, cnn
-    download_models()
+    download_models_from_gcs()
     model = joblib.load("models/model.pkl")
     scaler = joblib.load("models/scaler.pkl")
     cnn = load_model("models/drawings.keras")
